@@ -32,7 +32,7 @@ io.on('connection', (socket) => {
             let rcptSocket = usersockets[recipient]
             io.to(rcptSocket).emit('recv_msg', data)
         } else {
-            socket.broadcast.emit('recv_msg', data)            
+            io.emit('recv_msg', data)            
         }
     })
 
