@@ -1,7 +1,5 @@
 let socket = io();
-socket.on('connected', () => {
-    console.log("Connected " + socket.id)
-})
+
 
 $(function () {
     let msglist = $('#msglist')
@@ -14,6 +12,13 @@ $(function () {
 
     let user = ''
 
+    socket.on('connected', () => {
+        console.log("Connected " + socket.id)
+               
+    })
+    socket.on("new_user", function(data){
+        msglist.append($('<li>' + data +" is online" + '</li>'))
+    })
     sendbtn.click(function () {
         socket.emit('send_msg', {
             user: user,

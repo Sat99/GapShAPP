@@ -19,6 +19,7 @@ io.on('connection', (socket) => {
     socket.on('login', (data) => {
         // username is in data.user
         usersockets[data.user] = socket.id
+        socket.broadcast.emit("new_user",data.user)
         console.log(usersockets)
     })
     
