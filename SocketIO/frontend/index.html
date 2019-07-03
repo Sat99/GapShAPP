@@ -4,45 +4,83 @@
     <title></title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
+    />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <script src="jquery-3.2.1.js"></script>
     <script src="/socket.io/socket.io.js"></script>
     <script src="script.js"></script>
-    <link rel = "stylesheet" href = "index.css">
-
+    <link rel="stylesheet" href="index.css" />
   </head>
   <body>
     <div>
-    <div>
+      <div>
         <h1 class="center-align teal-text text-darken-2">GapSHAPP</h1>
+      </div>
+      <div id="login-div">
+        <input
+          placeholder="username"
+          class="center-align"
+          type="text"
+          id="loginbox"
+        />
+        <div class="row">
+          <div class="col s5 m5 l5 xl5"></div>
+          <button
+            id="loginbtn"
+            class="waves-effect waves-light btn-large col s2 m2 l2 xl2"
+          >
+            LOGIN
+          </button>
+          <div class="col s5 m5 l5 xl5"></div>
+        </div>
+      </div>
+      <div id="chat-div" style="display: none">
+        <div class="row">
+          <div id="room1" class="room col s6 m6 l6 xl6">
+            <h1 class="center-align teal-text text-lighten-1">Room A</h1>
+            <ul id="room1_msglist"></ul>
+            <input
+              class="center-align"
+              placeholder="new message"
+              type="text"
+              id="room1_msgbox"
+            />
+            <div class="row">
+              <div class="col s4 m4 l4 xl4"></div>
+              <button
+                class="waves-effect waves-light btn-large col s4 m4 l4 xl4"
+                id="room1_sendmsg"
+              >
+                SEND
+              </button>
+              <div class="col s4 m4 l4 xl4"></div>
+            </div>
+          </div>
+          <div id="room2" class="room col s6 m6 l6 xl6">
+            <h1 class="center-align teal-text text-lighten-1">Room B</h1>
+            <ul id="room2_msglist"></ul>
+            <input
+              class="center-align"
+              placeholder="new message"
+              type="text"
+              id="room2_msgbox"
+            />
+            <div class="row">
+              <div class="col s4 m4 l4 xl4"></div>
+              <button
+                class="waves-effect waves-light btn-large col s4 m4 l4 xl4"
+                id="room2_sendmsg"
+              >
+                SEND
+              </button>
+              <div class="col s4 m4 l4 xl4"></div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-    <div id="login-div">
-      <input placeholder="username" class="center-align" type="text" id="loginbox" />
-    <div class="row"> <div class="col s5 m5 l5 xl5"></div> <button id="loginbtn" class="waves-effect waves-light btn-large col s2 m2 l2 xl2">LOGIN</button> <div class="col s5 m5 l5 xl5"></div></div>
-    </div>
-    <div id="chat-div" style="display: none">
-      
-      <div class="row">
-      <div id="room1" class="room col s6 m6 l6 xl6">
-        <h1 class="center-align teal-text text-lighten-1">Room A</h1>
-        <ul id="room1_msglist" ></ul>
-        <input class="center-align"placeholder="new message" type="text" onfocus="this.value=''" id="room1_msgbox" />
-       <div class="row"> <div class="col s4 m4 l4 xl4"></div><button class="waves-effect waves-light btn-large col s4 m4 l4 xl4"id="room1_sendmsg">SEND</button><div class="col s4 m4 l4 xl4"></div></div>
-       
-
-
-      <div id="room2" class="room col s6 m6 l6 xl6">
-        <h1 class="center-align teal-text text-lighten-1">Room B</h1>
-        <ul id="room2_msglist"></ul>
-
-        <input class="center-align" placeholder="new message" type="text" onfocus="this.value=''" id="room2_msgbox" />
-        <div class="row"> <div class="col s4 m4 l4 xl4"></div><button class="waves-effect waves-light btn-large col s4 m4 l4 xl4"id="room2_sendmsg">SEND</button><div class="col s4 m4 l4 xl4"></div></div>
-    
-
-        
-    </div>
-  </div>
-</div>
   </body>
 </html>
