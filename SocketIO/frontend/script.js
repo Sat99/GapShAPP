@@ -19,6 +19,9 @@ $(function() {
   let room1_div = $("#room1"); //room divs
   let room2_div = $("#room2");
 
+  let room1_online_data_div = $('#room1_online_data_div')
+  let room2_online_data_div = $('#room2_online_data_div')
+  
   let user = "";
 
   socket.on("connected", () => {
@@ -92,4 +95,31 @@ $(function() {
   socket.on("room2_recv_msg", function(data) {
     room2_msglist.append($("<li>" + data.user + ": " + data.message + "</li>"));
   });
+  socket.on("room1_display_online_data", function(data)    //empties the div, then adds all the current online
+  {                                                         //users
+    const keys = Object.keys(data);                         //we call this whenever a user connects/disconnects
+    room1_online_data_div.empty();
+    room1_online_data_div.append("Online: ");
+    for( let i = 0; i < keys.length-1; ++i)
+    {
+      room1_online_data_div.append(keys[i])
+      room1_online_data_div.append(", ")
+    }
+    room1_online_data_div.append(keys[keys.length-1])
+  })
+  socket.on("room2_display_online_data", function(data)    //empties the div, then adds all the current online
+  {                                                         //users
+    const keys = Object.keys(data);                         //we call this whenever a user connects/disconnects
+    room2_online_data_div.empty();
+    room2_online_data_div.append("Online: ");
+    for( let i = 0; i < keys.length-1; ++i)
+    {
+      room2_online_data_div.append(keys[i])
+      room2_online_data_div.append(", ")
+    }
+    room2_online_data_div.append(keys[keys.length-1])
+  })
+
+ 
+
 });
