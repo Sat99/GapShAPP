@@ -1,0 +1,13 @@
+* { 
+    background-color:lightcyan;
+}
+#loginbtn {
+    margin-top: 20px;
+}
+#room1_msglist {
+    height: 300px;
+
+}
+#room2_msglist {
+    height: 300px;
+}
