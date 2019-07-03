@@ -31,13 +31,23 @@
       <div id="room1" class="room">
         <h1>Room A</h1>
         <ul id="room1_msglist"></ul>
-        <input placeholder="new message" type="text" id="room1_msgbox" />
+        <input
+          placeholder="new message"
+          type="text"
+          onfocus="this.value=''"
+          id="room1_msgbox"
+        />
         <button id="room1_sendmsg">SEND</button>
       </div>
       <div id="room2" class="room">
         <h1>Room B</h1>
         <ul id="room2_msglist"></ul>
-        <input placeholder="new message" type="text" id="room2_msgbox" />
+        <input
+          placeholder="new message"
+          type="text"
+          onfocus="this.value=''"
+          id="room2_msgbox"
+        />
         <button id="room2_sendmsg">SEND</button>
       </div>
     </div>
