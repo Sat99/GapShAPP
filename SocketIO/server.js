@@ -8,8 +8,8 @@ const app = express();
 const server = http.createServer(app)
 const io = socketio(server)
 
-let usersockets1 = {};     //for convenience, usersockets1 contains keys as 'user id' and values as 'user name'
-let usersockets2 = {};     // while usersockets2 contains keys as 'user name' and values as 'user ids'
+let usersockets = {};     //for convenience, usersockets1 contains keys as 'user id' and values as 'user name'
+    // while usersockets2 contains keys as 'user name' and values as 'user ids'
                             //for convenience as in, when we want to search user  id for a certain user name, and to search user name for a particular user id
 
 
@@ -21,10 +21,8 @@ io.on('connection', (socket) => {
 
     socket.on('login', (data) => {
         // username is in data.user
-        usersockets1[socket.id] = data.user;
-        usersockets2[data.user] = socket.id;
-        console.log(usersockets1);
-        console.log(usersockets2);
+        usersockets[data.user] = socket.id;
+        console.log(usersockets);
     })
     
     // socket.on('send_msg', (data) => {
@@ -39,36 +37,52 @@ io.on('connection', (socket) => {
     //         io.emit('recv_msg', data)            
     //     }
     // })
-    socket.on("room1", (room_name) =>
+    socket.on("room1", (data) =>
     {
-        socket.join(room_name);
-        socket.broadcast.in(room_name).emit("online_message_room1", usersockets1[socket.id] + " has joined the chat" )
+        socket.join(data.room);
+        socket.broadcast.in(data.room).emit("online_message_room1", {
+            user: data.user
+        } )
     })
-    socket.on("room2", (room_name) =>
+    socket.on("room2", (data) =>
     {
-        socket.join(room_name);
-        socket.broadcast.in(room_name).emit("online_message_room2", usersockets1[socket.id] + " has joined the chat" )
+        socket.join(data.room);
+        socket.broadcast.in(data.room).emit("online_message_room2", {
+            user: data.user
+        })
     })
-    socket.on("room1_send_msg", function(message)
+    socket.on("room1_send_msg", function(data)
     {
-        if (message.startsWith('@')) {
+        if (data.message.startsWith('@')) {
              //data.message = "@a: hello"
            // split at :, then remove @ from beginning
-            let recipient = message.split(':')[0].substr(1)
+            let recipient = data.message.split(':')[0].substr(1)
               // if we use io.emit, everyone gets it
         // if we use socket.broadcast.emit, only others get it
-            io.to(usersockets2[recipient]).emit('room1_recv_msg', usersockets1[socket.id] + ": " + message)
+            io.to(usersockets[recipient]).emit('room1_recv_msg', {
+                user: data.user,
+                message: data.message
+            })
         } else {
-            io.emit('room1_recv_msg', usersockets1[socket.id] + ": " + message)            
+            io.emit('room1_recv_msg', {
+                user: data.user,
+                message: data.message
+            })            
         }
     })
-    socket.on("room2_send_msg", function(message)
+    socket.on("room2_send_msg", function(data)
     {
-        if (message.startsWith('@')) {
-            let recipient = message.split(':')[0].substr(1)
-            io.to(usersockets2[recipient]).emit('room2_recv_msg', usersockets1[socket.id] + ": " + message)
+        if (data.message.startsWith('@')) {
+            let recipient = data.message.split(':')[0].substr(1)
+            io.to(usersockets[recipient]).emit('room2_recv_msg', {
+                user: data.user,
+                message: data.message
+            })
         } else {
-            io.emit('room2_recv_msg', usersockets1[socket.id] + ": " + message)            
+            io.emit('room2_recv_msg', {
+                user: data.user,
+                message: data.message
+            })            
         }
     })
 

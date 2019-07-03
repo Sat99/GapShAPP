@@ -26,10 +26,6 @@ $(function () {
         console.log("Connected " + socket.id)
                
     })
-    socket.on('connect', () =>
-    {
-        
-    })
     // socket.on("new_user", function(data){
     //     msglist.append($('<li>' + data +" is online" + '</li>'))
     // })
@@ -43,13 +39,19 @@ $(function () {
         })
         var room1 = "room1";
         var room2 = "room2";
-        socket.emit("room1", room1);
-        socket.emit("room2", room2);
+        socket.emit("room1", {
+            room: room1,
+            user: user
+        });
+        socket.emit("room2", {
+            room: room2,
+            user: user
+        });
     })
 
     socket.on("online_message_room1", function(data)   //displaying who is online in room1
     {
-        room1_msglist.append($('<li>' + data + "</li>" ))
+        room1_msglist.append($('<li>' + data.user + " has joined the chat" + "</li>" ))
     })
 
 
@@ -57,7 +59,7 @@ $(function () {
 
     socket.on("online_message_room2", function(data) //displaying who is online in room2
     {
-        room2_msglist.append($('<li>' + data + "</li>" ))
+        room2_msglist.append($('<li>' + data.user  + " has joined the chat" + "</li>" ))
     })
 
 
@@ -71,30 +73,31 @@ $(function () {
 
     room1_sendbtn.click(function()
     {
-        socket.emit('room1_send_msg', room1_msgbox.val())
+        socket.emit('room1_send_msg', {
+            user: user,
+            message: room1_msgbox.val()
+        })
     })
 
 
     room2_sendbtn.click(function()
     {
-        socket.emit('room2_send_msg', room2_msgbox.val())
+        socket.emit('room2_send_msg', {
+            user: user,
+            message: room2_msgbox.val()
+        })
     })
 
 
-    socket.on("room1_recv_msg", function(message)
+    socket.on("room1_recv_msg", function(data)
     {
-        room1_msglist.append($('<li>' + message + '</li>'))
+        room1_msglist.append($('<li>' + data.user + ": " + data.message + '</li>'))
     })
 
 
-    socket.on("room2_recv_msg", function(message)
+    socket.on("room2_recv_msg", function(data)
     {
-        room2_msglist.append($('<li>' + message + '</li>'))
+        room2_msglist.append($('<li>' + data.user + ": " + data.message + '</li>'))
     })
 
-
-
-    socket.on('recv_msg', function (data) {
-        msglist.append($('<li>' + data.user + ': ' + data.message + '</li>'))
-    })
 })
