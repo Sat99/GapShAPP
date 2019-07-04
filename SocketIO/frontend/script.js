@@ -119,7 +119,15 @@ $(function() {
     }
     room2_online_data_div.append(keys[keys.length-1])
   })
+  socket.on("room1_user_disconnected", function(data)
+  {
+    room1_msglist.append($("<li>" + data.user + " has left the chat" + "</li>"))
+  })
+  socket.on("room2_user_disconnected", function(data)
+  {
+    room2_msglist.append($("<li>" + data.user + " has left the chat" + "</li>"))
+  })
 
- 
+
 
 });

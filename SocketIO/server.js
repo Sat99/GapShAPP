@@ -75,6 +75,12 @@ io.on("connection", socket => {
   let index = values.indexOf(socket.id)           //Object.keys(object_name) returns basically an array of all
   let username = keys[index]                      //the keys in an object
   delete usersockets[username];
+  io.emit("room1_user_disconnected", {
+    user: username
+  })
+  io.emit("room2_user_disconnected", {
+    user: username
+  })
   io.emit("room1_display_online_data", usersockets)
   io.emit("room2_display_online_data", usersockets)   
   })
