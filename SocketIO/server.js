@@ -21,6 +21,8 @@ io.on("connection", socket => {
   socket.on("login", data => {
     // username is in data.user
     usersockets[data.user] = socket.id;
+    io.emit('room1_display_online_data', usersockets);
+    io.emit('room2_display_online_data', usersockets);
     console.log(usersockets);
   });
 
@@ -66,6 +68,22 @@ io.on("connection", socket => {
       });
     }
   });
+  socket.on("disconnect", function()
+  {
+  let values = Object.values(usersockets)         //Object.values(object_name) returns basically an array of all
+  let keys = Object.keys(usersockets)             //the values in an object
+  let index = values.indexOf(socket.id)           //Object.keys(object_name) returns basically an array of all
+  let username = keys[index]                      //the keys in an object
+  delete usersockets[username];
+  io.emit("room1_user_disconnected", {
+    user: username
+  })
+  io.emit("room2_user_disconnected", {
+    user: username
+  })
+  io.emit("room1_display_online_data", usersockets)
+  io.emit("room2_display_online_data", usersockets)   
+  })
   socket.on("room2_send_msg", function(data) {
     if (data.message.startsWith("@")) {
       let recipient = data.message.split(":")[0].substr(1);
