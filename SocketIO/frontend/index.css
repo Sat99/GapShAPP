@@ -1,16 +1,15 @@
-* { 
-    background-color:lightcyan;
+* {
+  background-color: lightcyan;
 }
 #loginbtn {
-    margin-top: 20px;
+  margin-top: 20px;
 }
-#room1_msglist {
-    height: 300px;
 
-}
-#room2_msglist {
-    height: 300px;
+.msglist_div {
+  overflow: scroll;
+  height: 250px;
+  font-weight: bold;
 }
 .online_data_div {
-    font-weight: bold
+  font-weight: bold;
 }
