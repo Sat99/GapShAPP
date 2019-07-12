@@ -1,7 +1,7 @@
-const express = require("express");
-const path = require("path");
-const socketio = require("socket.io");
-const http = require("http");
+const express = require('express');
+const path = require('path');
+const socketio = require('socket.io');
+const http = require('http');
 const SERVER_PORT = process.env.PORT || 2345;
 
 const app = express();
@@ -12,13 +12,13 @@ let usersockets = {}; //for convenience, usersockets1 contains keys as 'user id'
 // while usersockets2 contains keys as 'user name' and values as 'user ids'
 //for convenience as in, when we want to search user  id for a certain user name, and to search user name for a particular user id
 
-app.use("/", express.static(path.join(__dirname, "frontend")));
+app.use('/', express.static(path.join(__dirname, 'frontend')));
 
-io.on("connection", socket => {
-  console.log("New socket formed from " + socket.id);
-  socket.emit("connected");
+io.on('connection', socket => {
+  console.log('New socket formed from ' + socket.id);
+  socket.emit('connected');
 
-  socket.on("login", data => {
+  socket.on('login', data => {
     // username is in data.user
     usersockets[data.user] = socket.id;
     io.emit('room1_display_online_data', usersockets);
@@ -38,61 +38,60 @@ io.on("connection", socket => {
   //         io.emit('recv_msg', data)
   //     }
   // })
-  socket.on("room1", data => {
+  socket.on('room1', data => {
     socket.join(data.room);
-    socket.broadcast.in(data.room).emit("online_message_room1", {
+    socket.broadcast.in(data.room).emit('online_message_room1', {
       user: data.user
     });
   });
-  socket.on("room2", data => {
+  socket.on('room2', data => {
     socket.join(data.room);
-    socket.broadcast.in(data.room).emit("online_message_room2", {
+    socket.broadcast.in(data.room).emit('online_message_room2', {
       user: data.user
     });
   });
-  socket.on("room1_send_msg", function(data) {
-    if (data.message.startsWith("@")) {
+  socket.on('room1_send_msg', function(data) {
+    if (data.message.startsWith('@')) {
       //data.message = "@a: hello"
       // split at :, then remove @ from beginning
-      let recipient = data.message.split(":")[0].substr(1);
+      let recipient = data.message.split(':')[0].substr(1);
       // if we use io.emit, everyone gets it
       // if we use socket.broadcast.emit, only others get it
-      io.to(usersockets[recipient]).emit("room1_recv_msg", {
+      io.to(usersockets[recipient]).emit('room1_recv_msg', {
         user: data.user,
         message: data.message
       });
     } else {
-      io.emit("room1_recv_msg", {
+      io.emit('room1_recv_msg', {
         user: data.user,
         message: data.message
       });
     }
   });
-  socket.on("disconnect", function()
-  {
-  let values = Object.values(usersockets)         //Object.values(object_name) returns basically an array of all
-  let keys = Object.keys(usersockets)             //the values in an object
-  let index = values.indexOf(socket.id)           //Object.keys(object_name) returns basically an array of all
-  let username = keys[index]                      //the keys in an object
-  delete usersockets[username];
-  io.emit("room1_user_disconnected", {
-    user: username
-  })
-  io.emit("room2_user_disconnected", {
-    user: username
-  })
-  io.emit("room1_display_online_data", usersockets)
-  io.emit("room2_display_online_data", usersockets)   
-  })
-  socket.on("room2_send_msg", function(data) {
-    if (data.message.startsWith("@")) {
-      let recipient = data.message.split(":")[0].substr(1);
-      io.to(usersockets[recipient]).emit("room2_recv_msg", {
+  socket.on('disconnect', function() {
+    let values = Object.values(usersockets); //Object.values(object_name) returns basically an array of all
+    let keys = Object.keys(usersockets); //the values in an object
+    let index = values.indexOf(socket.id); //Object.keys(object_name) returns basically an array of all
+    let username = keys[index]; //the keys in an object
+    delete usersockets[username];
+    io.emit('room1_user_disconnected', {
+      user: username
+    });
+    io.emit('room2_user_disconnected', {
+      user: username
+    });
+    io.emit('room1_display_online_data', usersockets);
+    io.emit('room2_display_online_data', usersockets);
+  });
+  socket.on('room2_send_msg', function(data) {
+    if (data.message.startsWith('@')) {
+      let recipient = data.message.split(':')[0].substr(1);
+      io.to(usersockets[recipient]).emit('room2_recv_msg', {
         user: data.user,
         message: data.message
       });
     } else {
-      io.emit("room2_recv_msg", {
+      io.emit('room2_recv_msg', {
         user: data.user,
         message: data.message
       });
@@ -101,5 +100,5 @@ io.on("connection", socket => {
 });
 
 server.listen(SERVER_PORT, () =>
-  console.log("Website open on http://localhost:2345")
+  console.log('Website open on http://localhost:2345')
 );
